@@ -1,6 +1,7 @@
 import express from "express";
+import cors from "cors";
 import dotenv from "dotenv";
-import { availabilityRouter } from "./routes/availability.js";
+import { availabilityRouter } from "./routes/availability";
 
 dotenv.config({ path: "../.env" });
 
@@ -18,8 +19,14 @@ if (!CAL_API_VERSION) {
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+app.use(cors());
 app.use("/api/availability", availabilityRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Only listen when running directly (not on Vercel)
+if (process.env.VERCEL !== "1") {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;

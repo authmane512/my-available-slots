@@ -96,7 +96,8 @@ function App() {
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/availability?${params.toString()}`);
+      const apiBase = import.meta.env.VITE_API_URL || "";
+      const res = await fetch(`${apiBase}/api/availability?${params.toString()}`);
       const data = await res.json();
 
       if (!res.ok) {
